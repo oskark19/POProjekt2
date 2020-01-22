@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public abstract class SavedModel<A, B, C> {
     private transient int id;
-    public SavedModel save(A n, B v){
+    public SavedModel save(A n, B v) throws IOException, InterruptedException {
         throw new java.lang.UnsupportedOperationException("Saving with 2 parameters is not supported");
     }
     public SavedModel save(A n, B v, C c) throws IOException, InterruptedException {

@@ -11,10 +11,9 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
     private int id;
     private ArrayList<Subject> subjects;
 
-    public FieldOfStudy(String name, String slug, int id) {
+    public FieldOfStudy(String name, String slug) {
         this.name = name;
         this.slug = slug;
-        this.id = id;
     }
 
     public String getName() {
@@ -27,7 +26,6 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
 
     private void fetchSubjects() throws Exception {
         subjects = Client.getAPISubjects(this.id);
-        // TODO: Docelowo zaciąganie przedmiotów z API
         //subjects = SubjectFactory.getSubjects(this, 10);
     }
     public ArrayList<Subject> getSubjects() throws Exception {
@@ -41,15 +39,16 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         getSubjects().add(subject);
         Client.saveSubject(subject, this);
     }
-    public void removeSubject(Subject subject){
-//        Client.delSubject TODO: zmienic zeby usuwalo przedmiot z api
+    public void removeSubject(Subject subject) throws IOException, InterruptedException {
+        Client.deleteSubject(subject);
         subjects.remove(subject);
     }
 
-    public FieldOfStudy save(String name, String slug){
+    public FieldOfStudy save(String name, String slug) throws IOException, InterruptedException {
         this.name = name;
         this.slug = slug;
         System.out.println("zapisywanie kierunku " + this.toString());
+        Client.saveField(new FieldOfStudy(name, slug));
         // TODO: metoda z Clienta do zapisania kierunku studiow
         return this;
     }

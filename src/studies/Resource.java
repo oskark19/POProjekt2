@@ -35,7 +35,7 @@ public class Resource extends SavedModel<String, String, Subject> {
         this.name = name;
         this.url = url;
         Client client = new Client();
-        Client.saveResources(subject, this);
+        Client.saveResource(subject, this);
         return this;
     }
 

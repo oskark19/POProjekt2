@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class StudiesGUI {
@@ -62,11 +63,17 @@ public class StudiesGUI {
             public void actionPerformed(ActionEvent actionEvent) {
                 FieldOfStudy selected = getSelectedFieldOfStudy();
                 if (selected == null) { //dodajemy nowy element
-                    selected = new FieldOfStudy(studiesName.getText(), studiesSlug.getText(), fieldOfStudiesList.size()+10);
+                    selected = new FieldOfStudy(studiesName.getText(), studiesSlug.getText());
                     fieldOfStudiesList.add(selected);
                     System.out.println(selected.toString());
                 } else {
-                    selected = selected.save(studiesName.getText(), studiesSlug.getText());
+                    try {
+                        selected = selected.save(studiesName.getText(), studiesSlug.getText());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 fieldOfStudiesCBox.removeAllItems();
                 fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(fieldOfStudiesList.toArray()));
@@ -149,7 +156,13 @@ public class StudiesGUI {
             public void actionPerformed(ActionEvent actionEvent) {
                 Subject selected = getSelectedSubject();
                 subjectCBox.removeItem(selected);
-                getSelectedFieldOfStudy().removeSubject(selected);
+                try {
+                    getSelectedFieldOfStudy().removeSubject(selected);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         resourceCBox.addActionListener(new ActionListener() {

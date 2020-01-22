@@ -92,7 +92,7 @@ public class Client {
     }
 
 
-    public static void saveResources(Subject subject, Resource resource) throws IOException, InterruptedException {
+    public static void saveResource(Subject subject, Resource resource) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
@@ -114,12 +114,42 @@ public class Client {
         String json = new StringBuilder()
                 .append("{")
                 .append("\"name\":\"" + String.valueOf(field.getName()) + "\",")
-                .append("\"slug\":\"" + String.valueOf(field.getSlug()) + "\",")
+                .append("\"slug\":\"" + String.valueOf(field.getSlug()) + "\"")
                 .append("}").toString();
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .uri(URI.create("http://teleagh.herokuapp.com/api/fieldsofstudy/"))
                 .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+    }
+
+    public static void deleteField(FieldOfStudy field) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create("http://teleagh.herokuapp.com/api/fieldsofstudy/" + String.valueOf(field.getId()) + "/"))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+    }
+
+    public static void deleteSubject(Subject sub) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create("http://teleagh.herokuapp.com/api/subjects/" + String.valueOf(sub.getId()) + "/"))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+    }
+
+    public static void deleteResource(Resource resource) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create("http://teleagh.herokuapp.com/api/resources/" + String.valueOf(resource.getId()) + "/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());

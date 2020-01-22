@@ -38,12 +38,10 @@ public class Subject extends SavedModel<String, Integer, FieldOfStudy> {
         return resources;
     }
     public void addResource(Resource resource) throws Exception {
-        getResources().add(resource);
-//        Client.saveResource() TODO: metoda dodajaca resource do przedmiotu
+         Client.saveResource(this, resource);
     }
     public void removeResource(Resource resource) throws Exception {
-        getResources().remove(resource);
-//        Client.delResource(); TODO
+        Client.deleteResource(resource);
     }
 
     public Subject save(String name, int semester, FieldOfStudy field) throws Exception {
