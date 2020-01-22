@@ -32,10 +32,10 @@ public class Resource extends SavedModel<String, String, Subject> {
 
     @Override
     public SavedModel save(String name, String url, Subject subject) throws IOException, InterruptedException {
-        this.name = name;
-        this.url = url;
-        Client client = new Client();
-        Client.saveResource(subject, this);
+//        this.name = name;
+//        this.url = url;
+        System.out.println("zapisywanie kierunku " + name);
+        Client.saveResource(subject, name, url);
         return this;
     }
 

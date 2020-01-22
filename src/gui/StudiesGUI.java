@@ -214,8 +214,15 @@ public class StudiesGUI {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else
-                    //selected = (Resource) selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject());
+                } else {
+                    try {
+                        selected = (Resource) selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 {
                     try {
                         updateResourceCBox();

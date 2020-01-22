@@ -29,9 +29,9 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         //subjects = SubjectFactory.getSubjects(this, 10);
     }
     public ArrayList<Subject> getSubjects() throws Exception {
-        if(subjects == null)
+        //if(subjects == null)
             fetchSubjects();
-        System.out.println(ResourceFactory.getResources(subjects.get(0), 1));
+        //System.out.println(ResourceFactory.getResources(subjects.get(0), 1));
         return subjects;
     }
 
@@ -45,9 +45,9 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
     }
 
     public FieldOfStudy save(String name, String slug) throws IOException, InterruptedException {
-        this.name = name;
-        this.slug = slug;
-        System.out.println("zapisywanie kierunku " + this.toString());
+//        this.name = name;
+//        this.slug = slug;
+        System.out.println("zapisywanie kierunku " + name);
         Client.saveField(new FieldOfStudy(name, slug));
         return this;
     }

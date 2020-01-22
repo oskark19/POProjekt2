@@ -81,6 +81,7 @@ public class Client {
                 .append("\"general_description\":\"" + "Nowy Przedmiot" + "\",")
                 .append("\"field_of_studies_pk\":\"" + String.valueOf(field.getId()) + "\"")
                 .append("}").toString();
+        System.out.println(json);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .uri(URI.create(getBaseUrl() + "subjects/"))
@@ -91,12 +92,12 @@ public class Client {
     }
 
 
-    public static void saveResource(Subject subject, Resource resource) throws IOException, InterruptedException {
+    public static void saveResource(Subject subject, String name, String url) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
-                .append("\"name\":\"" + String.valueOf(resource.getName()) + "\",")
-                .append("\"url\":\"" + String.valueOf(resource.getUrl()) + "\",")
+                .append("\"name\":\"" + name + "\",")
+                .append("\"url\":\"" + url + "\",")
                 .append("\"subject_pk\":\"" + String.valueOf(subject.getId()) + "\"")
                 .append("}").toString();
         HttpRequest request = HttpRequest.newBuilder()
