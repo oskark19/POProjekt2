@@ -73,13 +73,13 @@ public class Client {
         return FieldOfStudyFactory.getFieldOfStudy(4);
     }
 
-    public static void saveSubject(Subject subject, FieldOfStudy field) throws Exception {
+    public static void saveSubject(String name, int semester, FieldOfStudy field) throws Exception {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
-                .append("\"semester\":\"" + String.valueOf(subject.getSemester()) + "\",")
-                .append("\"name\":\"" + String.valueOf(subject.getName()) + "\",")
-                .append("\"general_description\":\"" + String.valueOf(subject.getResources()) + "\",")
+                .append("\"semester\":\"" + String.valueOf(semester) + "\",")
+                .append("\"name\":\"" + String.valueOf(name) + "\",")
+                .append("\"general_description\":\"" + "Nowy Przedmiot" + "\",")
                 .append("\"field_of_studies_pk\":\"" + String.valueOf(field.getId()) + "\"")
                 .append("}").toString();
         HttpRequest request = HttpRequest.newBuilder()

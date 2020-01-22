@@ -45,11 +45,11 @@ public class Subject extends SavedModel<String, Integer, FieldOfStudy> {
     }
 
     public Subject save(String name, int semester, FieldOfStudy field) throws Exception {
-        this.name = name;
-        this.semester = semester;
-        System.out.println("zapisywanie przedmiotu " + this.toString());
+//        this.name = name;
+//        this.semester = semester;
+        System.out.println("zapisywanie przedmiotu " + name);
         Client client = new Client();
-        client.saveSubject(this, field);
+        client.saveSubject(name, semester, field);
         return this;
     }
     @Override
