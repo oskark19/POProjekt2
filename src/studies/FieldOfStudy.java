@@ -49,7 +49,6 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         this.slug = slug;
         System.out.println("zapisywanie kierunku " + this.toString());
         Client.saveField(new FieldOfStudy(name, slug));
-        // TODO: metoda z Clienta do zapisania kierunku studiow
         return this;
     }
 

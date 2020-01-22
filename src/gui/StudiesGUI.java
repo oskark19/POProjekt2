@@ -127,9 +127,19 @@ public class StudiesGUI {
                 int subjectSemesterFieldValue = (Integer) subjectSemesterSpin.getValue();
                 if (selected == null) {
                     selected = new Subject(subjectNameFieldValue, subjectSemesterFieldValue);
+                    try {
+                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     //getSelectedFieldOfStudy().addSubject(selected);
-                } else
-                    //selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                } else {
+                    try {
+                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 {
                     try {
                         updateSubjectCBox();
