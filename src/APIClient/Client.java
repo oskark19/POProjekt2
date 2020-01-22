@@ -69,18 +69,19 @@ public class Client {
     }
 
     public static ArrayList<FieldOfStudy> fetchFieldOfStudy() throws Exception {
-        return FieldOfStudyFactory.getFieldOfStudy(4);
+        return FieldOfStudyFactory.getFieldOfStudy();
     }
 
-    public static void saveSubject(Subject subject, FieldOfStudy field) throws Exception {
+    public static void saveSubject(String name, int semester, FieldOfStudy field) throws Exception {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
-                .append("\"semester\":\"" + String.valueOf(subject.getSemester()) + "\",")
-                .append("\"name\":\"" + String.valueOf(subject.getName()) + "\",")
-                .append("\"general_description\":\"" + String.valueOf(subject.getResources()) + "\",")
+                .append("\"semester\":\"" + String.valueOf(semester) + "\",")
+                .append("\"name\":\"" + String.valueOf(name) + "\",")
+                .append("\"general_description\":\"" + "Nowy Przedmiot" + "\",")
                 .append("\"field_of_studies_pk\":\"" + String.valueOf(field.getId()) + "\"")
                 .append("}").toString();
+        System.out.println(json);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .uri(URI.create(getBaseUrl() + "subjects/"))
@@ -91,12 +92,12 @@ public class Client {
     }
 
 
-    public static void saveResource(Subject subject, Resource resource) throws IOException, InterruptedException {
+    public static void saveResource(Subject subject, String name, String url) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
-                .append("\"name\":\"" + String.valueOf(resource.getName()) + "\",")
-                .append("\"url\":\"" + String.valueOf(resource.getUrl()) + "\",")
+                .append("\"name\":\"" + name + "\",")
+                .append("\"url\":\"" + url + "\",")
                 .append("\"subject_pk\":\"" + String.valueOf(subject.getId()) + "\"")
                 .append("}").toString();
         HttpRequest request = HttpRequest.newBuilder()

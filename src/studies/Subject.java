@@ -38,18 +38,17 @@ public class Subject extends SavedModel<String, Integer, FieldOfStudy> {
         return resources;
     }
     public void addResource(Resource resource) throws Exception {
-         Client.saveResource(this, resource);
+         Client.saveResource(this, resource.getName(), resource.getUrl());
     }
     public void removeResource(Resource resource) throws Exception {
         Client.deleteResource(resource);
     }
 
     public Subject save(String name, int semester, FieldOfStudy field) throws Exception {
-        this.name = name;
-        this.semester = semester;
-        System.out.println("zapisywanie przedmiotu " + this.toString());
-        Client client = new Client();
-        client.saveSubject(this, field);
+//        this.name = name;
+//        this.semester = semester;
+        System.out.println("zapisywanie przedmiotu " + name);
+        Client.saveSubject(name, semester, field);
         return this;
     }
     @Override

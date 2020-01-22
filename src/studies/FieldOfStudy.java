@@ -31,12 +31,13 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
     public ArrayList<Subject> getSubjects() throws Exception {
         if(subjects == null)
             fetchSubjects();
+        System.out.println(ResourceFactory.getResources(subjects.get(0), 1));
         return subjects;
     }
 
     public void addSubject(Subject subject) throws Exception {
         getSubjects().add(subject);
-        Client.saveSubject(subject, this);
+        Client.saveSubject(subject.getName(), subject.getSemester(), this);
     }
     public void removeSubject(Subject subject) throws IOException, InterruptedException {
         Client.deleteSubject(subject);

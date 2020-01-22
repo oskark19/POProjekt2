@@ -33,8 +33,7 @@ public class StudiesGUI {
     private JTextField resourceLink;
     private JButton deleteResourceBtn;
     private JButton saveResourceBtn;
-    private Boolean updateAlertShown = false;
-    ArrayList<FieldOfStudy> fieldOfStudiesList;
+
     public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame("Studies");
         frame.setContentPane(new StudiesGUI().mainPanel);
@@ -53,35 +52,12 @@ public class StudiesGUI {
         saveSubjectBtn = new SaveButton();
         saveResourceBtn = new SaveButton();
     }
-    private void checkForUpdate() throws Exception{
-        if(Client.fetchFieldOfStudy().size() != fieldOfStudiesCBox.getItemCount() && !updateAlertShown){
-            int dialogButton = JOptionPane.YES_NO_OPTION;
-            int dialogResult = JOptionPane.showConfirmDialog(null, "New data is available", "Update Found!", dialogButton);
-            if(dialogResult == 0) {
-                update();
-            } else {
-                updateAlertShown = true;
-            }
-        }
-    }
-    private void update() throws Exception{
-        fieldOfStudiesList = Client.fetchFieldOfStudy();
+
+    public StudiesGUI() throws Exception {
+        ArrayList<FieldOfStudy> fieldOfStudiesList = Client.fetchFieldOfStudy();
         fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(fieldOfStudiesList.toArray()));
         fieldOfStudiesCBox.setSelectedIndex(-1);
         updateFieldOfStudyForm();
-    }
-    public StudiesGUI() throws Exception {
-        update();
-        Timer timer = new Timer(5000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    checkForUpdate();
-                }
-                catch (Exception ignored){}
-            }
-        });
-        timer.start();
         saveStudiesBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -148,12 +124,23 @@ public class StudiesGUI {
                     return;
                 Subject selected = getSelectedSubject();
                 String subjectNameFieldValue = subjectName.getText();
+                System.out.println(getSelectedFieldOfStudy().getId());
                 int subjectSemesterFieldValue = (Integer) subjectSemesterSpin.getValue();
                 if (selected == null) {
                     selected = new Subject(subjectNameFieldValue, subjectSemesterFieldValue);
+                    try {
+                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     //getSelectedFieldOfStudy().addSubject(selected);
-                } else
-//                    selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                } else {
+                    try {
+                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 {
                     try {
                         updateSubjectCBox();
@@ -228,8 +215,15 @@ public class StudiesGUI {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else
-                    //selected = (Resource) selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject());
+                } else {
+                    try {
+                        selected = (Resource) selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 {
                     try {
                         updateResourceCBox();
