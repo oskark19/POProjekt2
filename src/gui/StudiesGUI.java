@@ -178,11 +178,7 @@ public class StudiesGUI {
         resourceCBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    updateResourceCBox();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                updateResourceForm();
             }
         });
         deleteResourceBtn.addActionListener(new ActionListener() {
@@ -191,7 +187,6 @@ public class StudiesGUI {
                 Resource selected = getSelectedResource();
                 if(selected == null)
                     return;
-//                resourceCBox.removeItem(selected);
                 try {
                     getSelectedSubject().removeResource(selected);
                 } catch (Exception e) {
