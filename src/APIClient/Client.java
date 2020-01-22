@@ -8,14 +8,13 @@ import studies.FieldOfStudyFactory;
 import studies.Resource;
 import studies.Subject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.http.*;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -26,7 +25,7 @@ public class Client {
     public static ArrayList<FieldOfStudy> getAPIField() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://teleagh.herokuapp.com/api/fieldsofstudy/"))
+                .uri(URI.create(getBaseUrl() + "fieldsofstudy/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         Gson g = new Gson();
@@ -41,7 +40,7 @@ public class Client {
     public static ArrayList<Subject> getAPISubjects(int field_id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://teleagh.herokuapp.com/api/fieldsofstudy/" + String.valueOf(field_id) + "/subjects/"))
+                .uri(URI.create(getBaseUrl() + "fieldsofstudy/" + String.valueOf(field_id) + "/subjects/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         Gson g = new Gson();
@@ -56,7 +55,7 @@ public class Client {
     public static ArrayList<Resource> getAPIResources(int subject_id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://teleagh.herokuapp.com/api/subjects/" + String.valueOf(subject_id) + "/resources/"))
+                .uri(URI.create(getBaseUrl() + "subjects/" + String.valueOf(subject_id) + "/resources/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
@@ -84,7 +83,7 @@ public class Client {
                 .append("}").toString();
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
-                .uri(URI.create("http://teleagh.herokuapp.com/api/subjects/"))
+                .uri(URI.create(getBaseUrl() + "subjects/"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -102,7 +101,7 @@ public class Client {
                 .append("}").toString();
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
-                .uri(URI.create("http://teleagh.herokuapp.com/api/resources/"))
+                .uri(URI.create(getBaseUrl() + "resources/"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -118,7 +117,7 @@ public class Client {
                 .append("}").toString();
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
-                .uri(URI.create("http://teleagh.herokuapp.com/api/fieldsofstudy/"))
+                .uri(URI.create(getBaseUrl() + "fieldsofstudy/"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -129,7 +128,7 @@ public class Client {
         HttpClient httpClient = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
-                .uri(URI.create("http://teleagh.herokuapp.com/api/fieldsofstudy/" + String.valueOf(field.getId()) + "/"))
+                .uri(URI.create(getBaseUrl() + "fieldsofstudy/" + String.valueOf(field.getId()) + "/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
@@ -139,7 +138,7 @@ public class Client {
         HttpClient httpClient = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
-                .uri(URI.create("http://teleagh.herokuapp.com/api/subjects/" + String.valueOf(sub.getId()) + "/"))
+                .uri(URI.create(getBaseUrl() + "subjects/" + String.valueOf(sub.getId()) + "/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
@@ -149,9 +148,20 @@ public class Client {
         HttpClient httpClient = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
-                .uri(URI.create("http://teleagh.herokuapp.com/api/resources/" + String.valueOf(resource.getId()) + "/"))
+                .uri(URI.create(getBaseUrl() + "resources/" + String.valueOf(resource.getId()) + "/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
+    }
+    private static String getBaseUrl() {
+        try{
+            File file = new File("plik.txt");
+            Scanner sc = new Scanner(file);
+
+            if (sc.hasNextLine())
+                return sc.nextLine();
+        }
+        catch (Exception ignored){}
+        return "http://teleagh.herokuapp.com/api/";
     }
 }
