@@ -31,7 +31,6 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
     public ArrayList<Subject> getSubjects() throws Exception {
         if(subjects == null)
             fetchSubjects();
-        System.out.println(ResourceFactory.getResources(subjects.get(0), 1));
         return subjects;
     }
 
