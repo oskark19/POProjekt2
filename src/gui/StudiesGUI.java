@@ -33,7 +33,7 @@ public class StudiesGUI {
     private JButton deleteResourceBtn;
     private JButton saveResourceBtn;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame("Studies");
         frame.setContentPane(new StudiesGUI().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,7 +52,7 @@ public class StudiesGUI {
         saveResourceBtn = new SaveButton();
     }
 
-    public StudiesGUI() {
+    public StudiesGUI() throws Exception {
         ArrayList<FieldOfStudy> fieldOfStudiesList = Client.fetchFieldOfStudy();
         fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(fieldOfStudiesList.toArray()));
         fieldOfStudiesCBox.setSelectedIndex(-1);

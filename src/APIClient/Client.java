@@ -69,7 +69,7 @@ public class Client {
         return resourceArray;
     }
 
-    public static ArrayList<FieldOfStudy> fetchFieldOfStudy() {
+    public static ArrayList<FieldOfStudy> fetchFieldOfStudy() throws Exception {
         return FieldOfStudyFactory.getFieldOfStudy(4);
     }
 
@@ -103,6 +103,22 @@ public class Client {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .uri(URI.create("http://teleagh.herokuapp.com/api/resources/"))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+    }
+
+    public static void saveField(FieldOfStudy field) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        String json = new StringBuilder()
+                .append("{")
+                .append("\"name\":\"" + String.valueOf(field.getName()) + "\",")
+                .append("\"slug\":\"" + String.valueOf(field.getSlug()) + "\",")
+                .append("}").toString();
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .uri(URI.create("http://teleagh.herokuapp.com/api/fieldsofstudy/"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
