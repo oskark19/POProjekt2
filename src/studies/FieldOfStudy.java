@@ -37,7 +37,7 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
 
     public void addSubject(Subject subject) throws Exception {
         getSubjects().add(subject);
-        Client.saveSubject(subject, this);
+        Client.saveSubject(subject.getName(), subject.getSemester(), this);
     }
     public void removeSubject(Subject subject) throws IOException, InterruptedException {
         Client.deleteSubject(subject);

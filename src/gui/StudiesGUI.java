@@ -124,6 +124,7 @@ public class StudiesGUI {
                     return;
                 Subject selected = getSelectedSubject();
                 String subjectNameFieldValue = subjectName.getText();
+                System.out.println(getSelectedFieldOfStudy().getId());
                 int subjectSemesterFieldValue = (Integer) subjectSemesterSpin.getValue();
                 if (selected == null) {
                     selected = new Subject(subjectNameFieldValue, subjectSemesterFieldValue);

@@ -69,7 +69,7 @@ public class Client {
     }
 
     public static ArrayList<FieldOfStudy> fetchFieldOfStudy() throws Exception {
-        return FieldOfStudyFactory.getFieldOfStudy(4);
+        return FieldOfStudyFactory.getFieldOfStudy();
     }
 
     public static void saveSubject(String name, int semester, FieldOfStudy field) throws Exception {
