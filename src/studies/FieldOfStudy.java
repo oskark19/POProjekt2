@@ -29,15 +29,15 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         //subjects = SubjectFactory.getSubjects(this, 10);
     }
     public ArrayList<Subject> getSubjects() throws Exception {
-        //if(subjects == null)
+        if(subjects == null)
             fetchSubjects();
-        //System.out.println(ResourceFactory.getResources(subjects.get(0), 1));
+        System.out.println(ResourceFactory.getResources(subjects.get(0), 1));
         return subjects;
     }
 
     public void addSubject(Subject subject) throws Exception {
         getSubjects().add(subject);
-        Client.saveSubject(subject.getName(), subject.getSemester(), this);
+        Client.saveSubject(subject, this);
     }
     public void removeSubject(Subject subject) throws IOException, InterruptedException {
         Client.deleteSubject(subject);
@@ -45,10 +45,11 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
     }
 
     public FieldOfStudy save(String name, String slug) throws IOException, InterruptedException {
-//        this.name = name;
-//        this.slug = slug;
-        System.out.println("zapisywanie kierunku " + name);
+        this.name = name;
+        this.slug = slug;
+        System.out.println("zapisywanie kierunku " + this.toString());
         Client.saveField(new FieldOfStudy(name, slug));
+        // TODO: metoda z Clienta do zapisania kierunku studiow
         return this;
     }
 

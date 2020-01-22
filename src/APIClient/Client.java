@@ -156,7 +156,7 @@ public class Client {
     }
     private static String getBaseUrl() {
         try{
-            File file = new File("plik.txt");
+            File file = new File("baseurl.txt");
             Scanner sc = new Scanner(file);
 
             if (sc.hasNextLine())
