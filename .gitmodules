@@ -1,0 +1,3 @@
+[submodule "backendd"]
+	path = backendd
+	url = git@github.com:nekeal/athena-backend.git

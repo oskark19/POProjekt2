@@ -113,6 +113,17 @@ public class StudiesGUI {
                 }
             }
         });
+        addNewSubjectBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                subjectCBox.setSelectedIndex(-1);
+                try {
+                    updateResourceCBox();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         deleteStudiesBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
