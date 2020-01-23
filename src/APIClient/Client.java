@@ -156,6 +156,7 @@ public class Client {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
     }
+
     private static String getBaseUrl() {
         try{
             File file = new File("baseurl.txt");

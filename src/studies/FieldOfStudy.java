@@ -68,7 +68,6 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         s.append(" (");
         s.append(slug);
         s.append(")");
-        s.append(id);
         return s.toString();
     }
 
