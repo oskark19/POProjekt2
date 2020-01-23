@@ -6,10 +6,17 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class FieldOfStudy extends SavedModel<String, String, String> {
+    private int id;
     private String name;
     private String slug;
-    private int id;
+
     private ArrayList<Subject> subjects;
+
+    public FieldOfStudy(String name, String slug, int id) {
+        this.name = name;
+        this.slug = slug;
+        this.id = id;
+    }
 
     public FieldOfStudy(String name, String slug) {
         this.name = name;
@@ -24,20 +31,22 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         return slug;
     }
 
+    public int getId() { return id; }
+
     private void fetchSubjects() throws Exception {
         subjects = Client.getAPISubjects(this.id);
         //subjects = SubjectFactory.getSubjects(this, 10);
     }
     public ArrayList<Subject> getSubjects() throws Exception {
-        if(subjects == null)
+        //if(subjects == null)
             fetchSubjects();
-        System.out.println(ResourceFactory.getResources(subjects.get(0), 1));
+        //System.out.println(ResourceFactory.getResources(subjects.get(0), 1));
         return subjects;
     }
 
-    public void addSubject(Subject subject) throws Exception {
-        getSubjects().add(subject);
-        Client.saveSubject(subject.getName(), subject.getSemester(), this);
+    public void addSubject(Subject subject, int field_id) throws Exception {
+        Client.saveSubject(subject.getName(), subject.getSemester(), field_id);
+        getSubjects();
     }
     public void removeSubject(Subject subject) throws IOException, InterruptedException {
         Client.deleteSubject(subject);
@@ -49,7 +58,6 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         this.slug = slug;
         System.out.println("zapisywanie kierunku " + this.toString());
         Client.saveField(new FieldOfStudy(name, slug));
-        // TODO: metoda z Clienta do zapisania kierunku studiow
         return this;
     }
 

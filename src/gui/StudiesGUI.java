@@ -64,20 +64,27 @@ public class StudiesGUI {
                 FieldOfStudy selected = getSelectedFieldOfStudy();
                 if (selected == null) { //dodajemy nowy element
                     selected = new FieldOfStudy(studiesName.getText(), studiesSlug.getText());
-                    fieldOfStudiesList.add(selected);
+                    //fieldOfStudiesList.add(selected);
                     System.out.println(selected.toString());
                 } else {
                     try {
-                        selected = selected.save(studiesName.getText(), studiesSlug.getText());
+                        /*selected = */selected.save(studiesName.getText(), studiesSlug.getText());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                fieldOfStudiesCBox.removeAllItems();
-                fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(fieldOfStudiesList.toArray()));
-                fieldOfStudiesCBox.setSelectedItem(selected);
+                {
+                    try {
+                        updateFieldCBox();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+//                fieldOfStudiesCBox.removeAllItems();
+//                fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(fieldOfStudiesList.toArray()));
+//                fieldOfStudiesCBox.setSelectedItem(selected);
             }
         });
         fieldOfStudiesCBox.addActionListener(new ActionListener() {
@@ -129,14 +136,14 @@ public class StudiesGUI {
                 if (selected == null) {
                     selected = new Subject(subjectNameFieldValue, subjectSemesterFieldValue);
                     try {
-                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy().getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     //getSelectedFieldOfStudy().addSubject(selected);
                 } else {
                     try {
-                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy().getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -208,16 +215,17 @@ public class StudiesGUI {
                 Resource selected = getSelectedResource();
                 String resourceDescriptionFieldValue = resourceDescription.getText();
                 String resourceLinkFieldValue = resourceLink.getText();
+                System.out.println(getSelectedSubject().getId());
                 if (selected == null) {
                     selected = new Resource(resourceDescriptionFieldValue, resourceLinkFieldValue);
                     try {
-                        getSelectedSubject().addResource(selected);
+                        selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject().getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
-                        selected = (Resource) selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject());
+                        selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject().getId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -245,6 +253,12 @@ public class StudiesGUI {
 
     public Resource getSelectedResource(){
         return (Resource) resourceCBox.getSelectedItem();
+    }
+
+    private void updateFieldCBox() throws Exception {
+        fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(Client.fetchFieldOfStudy().toArray()));
+        fieldOfStudiesCBox.setSelectedIndex(-1);
+        updateFieldOfStudyForm();
     }
 
     private void updateSubjectCBox() throws Exception {

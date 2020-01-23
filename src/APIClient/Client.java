@@ -28,6 +28,7 @@ public class Client {
                 .uri(URI.create(getBaseUrl() + "fieldsofstudy/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
         Gson g = new Gson();
         FieldOfStudy[] fieldList = g.fromJson(response.body(), FieldOfStudy[].class);
         ArrayList<FieldOfStudy> fieldArray = new ArrayList<>();
@@ -72,14 +73,14 @@ public class Client {
         return FieldOfStudyFactory.getFieldOfStudy();
     }
 
-    public static void saveSubject(String name, int semester, FieldOfStudy field) throws Exception {
+    public static void saveSubject(String name, int semester, int field_id) throws Exception {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
                 .append("\"semester\":\"" + String.valueOf(semester) + "\",")
                 .append("\"name\":\"" + String.valueOf(name) + "\",")
                 .append("\"general_description\":\"" + "Nowy Przedmiot" + "\",")
-                .append("\"field_of_studies_pk\":\"" + String.valueOf(field.getId()) + "\"")
+                .append("\"field_of_studies_pk\":\"" + String.valueOf(field_id) + "\"")
                 .append("}").toString();
         System.out.println(json);
         HttpRequest request = HttpRequest.newBuilder()
@@ -92,14 +93,15 @@ public class Client {
     }
 
 
-    public static void saveResource(Subject subject, String name, String url) throws IOException, InterruptedException {
+    public static void saveResource(int sub_id, String name, String url) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
                 .append("\"name\":\"" + name + "\",")
                 .append("\"url\":\"" + url + "\",")
-                .append("\"subject_pk\":\"" + String.valueOf(subject.getId()) + "\"")
+                .append("\"subject_pk\":\"" + String.valueOf(sub_id) + "\"")
                 .append("}").toString();
+        System.out.println(json);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .uri(URI.create(getBaseUrl() + "resources/"))
@@ -154,6 +156,7 @@ public class Client {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
     }
+
     private static String getBaseUrl() {
         try{
             File file = new File("baseurl.txt");
