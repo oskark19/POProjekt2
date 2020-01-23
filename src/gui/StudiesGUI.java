@@ -129,14 +129,14 @@ public class StudiesGUI {
                 if (selected == null) {
                     selected = new Subject(subjectNameFieldValue, subjectSemesterFieldValue);
                     try {
-                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy().getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     //getSelectedFieldOfStudy().addSubject(selected);
                 } else {
                     try {
-                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy());
+                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy().getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -208,16 +208,17 @@ public class StudiesGUI {
                 Resource selected = getSelectedResource();
                 String resourceDescriptionFieldValue = resourceDescription.getText();
                 String resourceLinkFieldValue = resourceLink.getText();
+                System.out.println(getSelectedSubject().getId());
                 if (selected == null) {
                     selected = new Resource(resourceDescriptionFieldValue, resourceLinkFieldValue);
                     try {
-                        getSelectedSubject().addResource(selected);
+                        selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject().getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
-                        selected = (Resource) selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject());
+                        selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject().getId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {

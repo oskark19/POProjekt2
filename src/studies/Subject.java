@@ -33,22 +33,24 @@ public class Subject extends SavedModel<String, Integer, FieldOfStudy> {
     }
 
     public ArrayList<Resource> getResources() throws Exception {
-        if(resources == null)
+        //if(resources == null)
             fetchResources();
         return resources;
     }
-    public void addResource(Resource resource) throws Exception {
-         Client.saveResource(this, resource.getName(), resource.getUrl());
+    public void addResource(Resource resource, int sub_id) throws Exception {
+         Client.saveResource(sub_id, resource.getName(), resource.getUrl());
+         getResources();
     }
     public void removeResource(Resource resource) throws Exception {
         Client.deleteResource(resource);
+        resources.remove(resource);
     }
 
-    public Subject save(String name, int semester, FieldOfStudy field) throws Exception {
+    public Subject save(String name, int semester, int field_id) throws Exception {
 //        this.name = name;
 //        this.semester = semester;
         System.out.println("zapisywanie przedmiotu " + name);
-        Client.saveSubject(name, semester, field);
+        Client.saveSubject(name, semester, field_id);
         return this;
     }
     @Override
