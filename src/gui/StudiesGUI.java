@@ -82,9 +82,6 @@ public class StudiesGUI {
                         e.printStackTrace();
                     }
                 }
-//                fieldOfStudiesCBox.removeAllItems();
-//                fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(fieldOfStudiesList.toArray()));
-//                fieldOfStudiesCBox.setSelectedItem(selected);
             }
         });
         fieldOfStudiesCBox.addActionListener(new ActionListener() {
@@ -120,8 +117,19 @@ public class StudiesGUI {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 FieldOfStudy selected = getSelectedFieldOfStudy();
+                try {
+                    Client.deleteField(getSelectedFieldOfStudy().getId());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 fieldOfStudiesCBox.removeItem(selected);
-                fieldOfStudiesList.remove(selected);
+                try {
+                    updateFieldCBox();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         saveSubjectBtn.addActionListener(new ActionListener() {
@@ -173,12 +181,17 @@ public class StudiesGUI {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Subject selected = getSelectedSubject();
-                subjectCBox.removeItem(selected);
                 try {
                     getSelectedFieldOfStudy().removeSubject(selected);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                subjectCBox.removeItem(selected);
+                try {
+                    updateSubjectCBox();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -257,7 +270,7 @@ public class StudiesGUI {
 
     private void updateFieldCBox() throws Exception {
         fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(Client.fetchFieldOfStudy().toArray()));
-        fieldOfStudiesCBox.setSelectedIndex(-1);
+        fieldOfStudiesCBox.setSelectedIndex(1);
         updateFieldOfStudyForm();
     }
 

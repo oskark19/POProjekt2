@@ -127,31 +127,84 @@ public class Client {
         System.out.println(response.statusCode());
     }
 
-    public static void deleteField(FieldOfStudy field) throws IOException, InterruptedException {
+    public static void putSubject(String name, int semester, int field_id) throws Exception {
         HttpClient httpClient = HttpClient.newBuilder().build();
+        String json = new StringBuilder()
+                .append("{")
+                .append("\"semester\":\"" + String.valueOf(semester) + "\",")
+                .append("\"name\":\"" + String.valueOf(name) + "\",")
+                .append("\"general_description\":\"" + "Nowy Przedmiot" + "\",")
+                .append("\"field_of_studies_pk\":\"" + String.valueOf(field_id) + "\"")
+                .append("}").toString();
+        System.out.println(json);
         HttpRequest request = HttpRequest.newBuilder()
-                .DELETE()
-                .uri(URI.create(getBaseUrl() + "fieldsofstudy/" + String.valueOf(field.getId()) + "/"))
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .uri(URI.create(getBaseUrl() + "subjects/"))
+                .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
     }
 
-    public static void deleteSubject(Subject sub) throws IOException, InterruptedException {
+    public static void putResource(int sub_id, String name, String url) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
+        String json = new StringBuilder()
+                .append("{")
+                .append("\"name\":\"" + name + "\",")
+                .append("\"url\":\"" + url + "\",")
+                .append("\"subject_pk\":\"" + String.valueOf(sub_id) + "\"")
+                .append("}").toString();
+        System.out.println(json);
         HttpRequest request = HttpRequest.newBuilder()
-                .DELETE()
-                .uri(URI.create(getBaseUrl() + "subjects/" + String.valueOf(sub.getId()) + "/"))
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .uri(URI.create(getBaseUrl() + "resources/"))
+                .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
     }
 
-    public static void deleteResource(Resource resource) throws IOException, InterruptedException {
+    public static void putField(FieldOfStudy field) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        String json = new StringBuilder()
+                .append("{")
+                .append("\"name\":\"" + String.valueOf(field.getName()) + "\",")
+                .append("\"slug\":\"" + String.valueOf(field.getSlug()) + "\"")
+                .append("}").toString();
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .uri(URI.create(getBaseUrl() + "fieldsofstudy/"))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+    }
+
+    public static void deleteField(int field_id) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
-                .uri(URI.create(getBaseUrl() + "resources/" + String.valueOf(resource.getId()) + "/"))
+                .uri(URI.create(getBaseUrl() + "fieldsofstudy/" + String.valueOf(field_id) + "/"))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+    }
+
+    public static void deleteSubject(int sub_id) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create(getBaseUrl() + "subjects/" + String.valueOf(sub_id) + "/"))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+    }
+
+    public static void deleteResource(int res_id) throws IOException, InterruptedException {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create(getBaseUrl() + "resources/" + String.valueOf(res_id) + "/"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());

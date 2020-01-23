@@ -49,7 +49,7 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         getSubjects();
     }
     public void removeSubject(Subject subject) throws IOException, InterruptedException {
-        Client.deleteSubject(subject);
+        Client.deleteSubject(subject.getId());
         subjects.remove(subject);
     }
 

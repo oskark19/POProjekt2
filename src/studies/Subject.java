@@ -42,7 +42,7 @@ public class Subject extends SavedModel<String, Integer, FieldOfStudy> {
          getResources();
     }
     public void removeResource(Resource resource) throws Exception {
-        Client.deleteResource(resource);
+        Client.deleteResource(resource.getId());
         resources.remove(resource);
     }
 
