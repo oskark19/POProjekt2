@@ -61,6 +61,14 @@ public class FieldOfStudy extends SavedModel<String, String, String> {
         return this;
     }
 
+    public FieldOfStudy update(String name, String slug, int field_id) throws IOException, InterruptedException {
+        this.name=name;
+        this.slug=slug;
+        System.out.println("update kierunku " + name);
+        Client.putField(name, slug, field_id);
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();

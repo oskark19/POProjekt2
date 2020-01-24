@@ -53,6 +53,15 @@ public class Subject extends SavedModel<String, Integer, FieldOfStudy> {
         Client.saveSubject(name, semester, field_id);
         return this;
     }
+
+    public Subject update(String name, int semester, int field_id, int sub_id) throws Exception{
+        this.name=name;
+        this.semester=semester;
+        System.out.println("update przedmiotu " + name);
+        Client.putSubject(name, semester, field_id, sub_id);
+        return this;
+    }
+
     @Override
     public String toString() {
         return this.name;

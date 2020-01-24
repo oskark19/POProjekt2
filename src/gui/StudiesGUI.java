@@ -63,12 +63,18 @@ public class StudiesGUI {
             public void actionPerformed(ActionEvent actionEvent) {
                 FieldOfStudy selected = getSelectedFieldOfStudy();
                 if (selected == null) { //dodajemy nowy element
-                    selected = new FieldOfStudy(studiesName.getText(), studiesSlug.getText());
+                    try {
+                        selected = selected.save(studiesName.getText(), studiesSlug.getText());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     //fieldOfStudiesList.add(selected);
                     System.out.println(selected.toString());
                 } else {
                     try {
-                        /*selected = */selected.save(studiesName.getText(), studiesSlug.getText());
+                        selected.update(studiesName.getText(), studiesSlug.getText(), selected.getId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -162,7 +168,7 @@ public class StudiesGUI {
                     //getSelectedFieldOfStudy().addSubject(selected);
                 } else {
                     try {
-                        selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy().getId());
+                        selected.update(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy().getId(), selected.getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -249,7 +255,7 @@ public class StudiesGUI {
                     }
                 } else {
                     try {
-                        selected.save(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject().getId());
+                        selected.update(resourceDescriptionFieldValue, resourceLinkFieldValue, getSelectedSubject().getId(), selected.getId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {

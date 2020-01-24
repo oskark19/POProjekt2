@@ -127,7 +127,7 @@ public class Client {
         System.out.println(response.statusCode());
     }
 
-    public static void putSubject(String name, int semester, int field_id) throws Exception {
+    public static void putSubject(String name, int semester, int field_id, int sub_id) throws Exception {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
@@ -139,14 +139,15 @@ public class Client {
         System.out.println(json);
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
-                .uri(URI.create(getBaseUrl() + "subjects/"))
+                .uri(URI.create(getBaseUrl() + "subjects/" + String.valueOf(sub_id) + "/"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
+        System.out.println(response.body());
     }
 
-    public static void putResource(int sub_id, String name, String url) throws IOException, InterruptedException {
+    public static void putResource(String name, String url, int sub_id, int res_id) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
@@ -157,23 +158,23 @@ public class Client {
         System.out.println(json);
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
-                .uri(URI.create(getBaseUrl() + "resources/"))
+                .uri(URI.create(getBaseUrl() + "resources/" + String.valueOf(res_id) + "/"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
     }
 
-    public static void putField(FieldOfStudy field) throws IOException, InterruptedException {
+    public static void putField(String name, String slug, int field_id) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newBuilder().build();
         String json = new StringBuilder()
                 .append("{")
-                .append("\"name\":\"" + String.valueOf(field.getName()) + "\",")
-                .append("\"slug\":\"" + String.valueOf(field.getSlug()) + "\"")
+                .append("\"name\":\"" + name + "\",")
+                .append("\"slug\":\"" + slug + "\"")
                 .append("}").toString();
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
-                .uri(URI.create(getBaseUrl() + "fieldsofstudy/"))
+                .uri(URI.create(getBaseUrl() + "fieldsofstudy/" + String.valueOf(field_id) + "/"))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
