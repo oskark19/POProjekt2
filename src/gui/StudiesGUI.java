@@ -28,7 +28,7 @@ public class StudiesGUI {
     private JSpinner subjectSemesterSpin;
     private JButton deleteSubjectBtn;
     private JButton saveSubjectBtn;
-    private JButton dodajNowyMaterialButton;
+    private JButton addNewResourceBtn;
     private JTextField resourceDescription;
     private JTextField resourceLink;
     private JButton deleteResourceBtn;
@@ -128,6 +128,12 @@ public class StudiesGUI {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+        addNewResourceBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                resourceCBox.setSelectedIndex(-1);
             }
         });
         deleteStudiesBtn.addActionListener(new ActionListener() {
