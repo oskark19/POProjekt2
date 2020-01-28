@@ -64,7 +64,8 @@ public class StudiesGUI {
                 FieldOfStudy selected = getSelectedFieldOfStudy();
                 if (selected == null) { //dodajemy nowy element
                     try {
-                        selected = selected.save(studiesName.getText(), studiesSlug.getText());
+                        selected = new FieldOfStudy(studiesName.getText(), studiesSlug.getText());
+                        selected.save(studiesName.getText(), studiesSlug.getText());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -83,7 +84,7 @@ public class StudiesGUI {
                 }
                 {
                     try {
-                        updateFieldCBox();
+                        updateFieldCBox(fieldOfStudiesCBox.getItemCount());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -96,12 +97,12 @@ public class StudiesGUI {
                 FieldOfStudy selected = getSelectedFieldOfStudy();
                 updateFieldOfStudyForm();
                 try {
-                    updateSubjectCBox();
+                    updateSubjectCBox(-1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 try {
-                    updateResourceCBox();
+                    updateResourceCBox(-1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -113,7 +114,7 @@ public class StudiesGUI {
             public void actionPerformed(ActionEvent actionEvent) {
                 fieldOfStudiesCBox.setSelectedIndex(-1);
                 try {
-                    updateSubjectCBox();
+                    updateSubjectCBox(-1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -124,7 +125,7 @@ public class StudiesGUI {
             public void actionPerformed(ActionEvent actionEvent) {
                 subjectCBox.setSelectedIndex(-1);
                 try {
-                    updateResourceCBox();
+                    updateResourceCBox(-1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -149,7 +150,7 @@ public class StudiesGUI {
                 }
                 fieldOfStudiesCBox.removeItem(selected);
                 try {
-                    updateFieldCBox();
+                    updateFieldCBox(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -164,24 +165,34 @@ public class StudiesGUI {
                 String subjectNameFieldValue = subjectName.getText();
                 System.out.println(getSelectedFieldOfStudy().getId());
                 int subjectSemesterFieldValue = (Integer) subjectSemesterSpin.getValue();
+                int index = 0;
                 if (selected == null) {
                     selected = new Subject(subjectNameFieldValue, subjectSemesterFieldValue);
                     try {
                         selected.save(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy().getId());
+                        index = 0;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     //getSelectedFieldOfStudy().addSubject(selected);
                 } else {
                     try {
+                        String name = subjectNameFieldValue;
                         selected.update(subjectNameFieldValue, subjectSemesterFieldValue, getSelectedFieldOfStudy().getId(), selected.getId());
+                        updateSubjectCBox(0);
+                        for(int i=0; i<subjectCBox.getItemCount(); i++){
+                            if(((Subject)subjectCBox.getItemAt(i)).getName().equals(name)){
+                                index=i;
+                                break;
+                            }
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 {
                     try {
-                        updateSubjectCBox();
+                        updateSubjectCBox(index);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -193,7 +204,7 @@ public class StudiesGUI {
             public void actionPerformed(ActionEvent actionEvent) {
                 updateSubjectForm();
                 try {
-                    updateResourceCBox();
+                    updateResourceCBox(-1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -213,7 +224,7 @@ public class StudiesGUI {
                 }
                 subjectCBox.removeItem(selected);
                 try {
-                    updateSubjectCBox();
+                    updateSubjectCBox(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -237,7 +248,7 @@ public class StudiesGUI {
                     e.printStackTrace();
                 }
                 try {
-                    updateResourceCBox();
+                    updateResourceCBox(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -270,7 +281,7 @@ public class StudiesGUI {
                 }
                 {
                     try {
-                        updateResourceCBox();
+                        updateResourceCBox(0);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -291,28 +302,30 @@ public class StudiesGUI {
         return (Resource) resourceCBox.getSelectedItem();
     }
 
-    private void updateFieldCBox() throws Exception {
+    private void updateFieldCBox(int id) throws Exception {
         fieldOfStudiesCBox.setModel(new DefaultComboBoxModel(Client.fetchFieldOfStudy().toArray()));
-        fieldOfStudiesCBox.setSelectedIndex(1);
+        fieldOfStudiesCBox.setSelectedIndex(id);
         updateFieldOfStudyForm();
     }
 
-    private void updateSubjectCBox() throws Exception {
+    private void updateSubjectCBox(int id) throws Exception {
         FieldOfStudy selected = getSelectedFieldOfStudy();
         if (selected == null)
             subjectCBox.setModel(new DefaultComboBoxModel());
         else{
             subjectCBox.setModel(new DefaultComboBoxModel(selected.getSubjects().toArray()));
         }
+        subjectCBox.setSelectedIndex(id);
         updateSubjectForm();
     }
-    private void updateResourceCBox() throws Exception {
+    private void updateResourceCBox(int id) throws Exception {
         Subject selected = getSelectedSubject();
         if (selected == null)
             resourceCBox.setModel(new DefaultComboBoxModel());
         else{
             resourceCBox.setModel(new DefaultComboBoxModel(selected.getResources().toArray()));
         }
+        resourceCBox.setSelectedIndex(id);
         updateResourceForm();
     }
 
