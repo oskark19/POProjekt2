@@ -62,6 +62,7 @@ public class StudiesGUI {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 FieldOfStudy selected = getSelectedFieldOfStudy();
+                int n=0;
                 if (selected == null) { //dodajemy nowy element
                     try {
                         selected = new FieldOfStudy(studiesName.getText(), studiesSlug.getText());
@@ -76,6 +77,7 @@ public class StudiesGUI {
                 } else {
                     try {
                         selected.update(studiesName.getText(), studiesSlug.getText(), selected.getId());
+                        n++;
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -84,7 +86,7 @@ public class StudiesGUI {
                 }
                 {
                     try {
-                        updateFieldCBox(fieldOfStudiesCBox.getItemCount());
+                        updateFieldCBox(fieldOfStudiesCBox.getItemCount()-n);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
